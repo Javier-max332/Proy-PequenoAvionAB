@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+
+<!-- =========================================================
+     VISTA: login.html
+     Página de inicio de sesión del sistema.
+     
+     Permite:
+     - Iniciar sesión con Spring Security
+     - Mostrar errores de autenticación
+     - Mostrar mensaje después del registro
+     ========================================================= -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <!-- Título fijo de la pestaña -->
+        <title>Iniciar Sesión - Pequeño Avión</title>
+
+        <!-- Ícono de la pestaña -->
+        <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+
+        <!-- /head -->
+    </head>
+
+    <!-- Estilos generales de la vista -->
+    <body style="background-color: #0b0f19; color: white; font-family: sans-serif; text-align: center; padding-top: 100px;">
+
+        <!-- =====================================================
+             CONTENIDO PRINCIPAL DEL LOGIN
+             ===================================================== -->
+
+        <!-- Título principal -->
+        <h2>Bienvenido a Pequeño Avión</h2>
+
+        <!-- =====================================================
+             MENSAJES DINÁMICOS DE SPRING SECURITY
+             ===================================================== -->
+
+        <!-- CASO 1:
+             Si las credenciales son incorrectas,
+             Spring envía el parámetro ?error -->
+        <div th:if="${param.error}"
+             style="color: #ef4444; margin-bottom: 20px;">
+
+            Usuario o contraseña incorrectos.
+        </div>
+        <!-- /CASO 1 -->
+
+        <!-- CASO 2:
+             Si el usuario viene del registro exitoso,
+             se muestra un mensaje de confirmación -->
+        <div th:if="${param.registrado}"
+             style="color: #10b981; margin-bottom: 20px;">
+
+            ¡Cuenta creada con éxito! Ahora puedes iniciar sesión.
+        </div>
+        <!-- /CASO 2 -->
+
+        <!-- =====================================================
+             FORMULARIO DE INICIO DE SESIÓN
+             ===================================================== -->
+
+        <!-- IMPORTANTE:
+             El formulario debe enviar POST a /login
+             porque Spring Security procesa esta ruta automáticamente -->
+        <form th:action="@{/login}"
+              method="post"
+              style="background: #111827; display: inline-block; padding: 30px; border-radius: 8px;">
+
+            <!-- Campo usuario -->
+            <div style="margin-bottom: 15px;">
+
+                <label>Usuario:</label><br>
+
+                <!-- IMPORTANTE:
+                     El atributo name DEBE llamarse "username"
+                     para que Spring Security lo reconozca -->
+                <input type="text"
+                       name="username"
+                       required
+                       style="padding: 8px; width: 200px;">
+            </div>
+
+            <!-- Campo contraseña -->
+            <div style="margin-bottom: 20px;">
+
+                <label>Contraseña:</label><br>
+
+                <!-- IMPORTANTE:
+                     El atributo name DEBE llamarse "password"
+                     para que Spring Security lo procese -->
+                <input type="password"
+                       name="password"
+                       required
+                       style="padding: 8px; width: 200px;">
+            </div>
+
+            <!-- Botón para enviar el formulario -->
+            <button type="submit"
+                    style="background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+
+                Entrar
+            </button>
+
+        </form>
+        <!-- /form -->
+
+        <!-- /body -->
+    </body>
+
+    <!-- /html -->
+</html>

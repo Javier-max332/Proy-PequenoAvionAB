@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <!-- Título fijo de la pestaña del navegador -->
+        <title>Compra Exitosa - Pequeño Avión</title>
+        <!-- Hoja de estilos global del proyecto -->
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <style>
+            /* =================================================================
+               ESTILOS LOCALES: Caja de confirmación de compra exitosa
+               ================================================================= */
+
+            /* Caja central que contiene el mensaje de éxito */
+            .success-box {
+                background: #1e293b;          /* Fondo azul oscuro */
+                padding: 40px;
+                border-radius: 12px;
+                max-width: 600px;
+                margin: 50px auto;            /* Centrado horizontalmente */
+                text-align: center;
+                border: 1px solid #10b981;    /* Borde verde (color de éxito) */
+            }
+
+            /* Ícono grande de la palomita ✅ */
+            .icon {
+                font-size: 4rem;
+                color: #10b981;
+                margin-bottom: 20px;
+            }
+        </style>
+        <!-- /head: fin de la cabecera y estilos -->
+    </head>
+
+    <body>
+
+        <!-- ====================================================================
+             VISTA: compraExitosa.html
+                Esta solo fue una prueba
+                NO FUNCIONA Y NO SE UTIZA
+             ==================================================================== -->
+
+        <!-- Tarjeta principal de confirmación -->
+        <div class="success-box">
+
+            <!-- Ícono visual de éxito -->
+            <div class="icon">✅</div>
+
+            <!-- Título principal -->
+            <h2>¡Pago Procesado con Éxito!</h2>
+
+            <!-- Mensaje informativo para el cliente -->
+            <p>Tu orden ha sido confirmada y ya la estamos preparando.</p>
+
+            <!-- Número de pedido: lo manda el controlador en el modelo (${numPedido}) -->
+            <p style="font-size: 1.2rem; color: #38bdf8; margin: 20px 0;">
+                Número de Pedido: <strong th:text="${numPedido}"></strong>
+            </p>
+
+            <!-- Botón para regresar a la página principal de la tienda -->
+            <a th:href="@{/}" class="btn-comprar" 
+               style="padding: 10px 20px; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px;">
+                Volver a la Tienda
+            </a>
+
+            <!-- /success-box: fin de la tarjeta de confirmación -->
+        </div>
+
+        <!-- /body: fin del cuerpo de la página -->
+    </body>
+    <!-- /html: fin del documento -->
+</html>

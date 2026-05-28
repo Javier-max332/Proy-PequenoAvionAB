@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Pedidos - Pequeño Avión</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <div class="cart-wrapper">
+        <!-- Encabezado -->
+        <div class="cart-header-title">
+            <span class="subtitle">HISTORIAL</span>
+            <h1>Mis Pedidos</h1>
+        </div>
+
+        <!-- Mensaje si no hay pedidos -->
+        <div th:if="${listaPedidos.isEmpty()}" class="empty-cart-message" style="text-align: center; padding: 50px 0;">
+            <h2 style="color: #94a3b8; margin-bottom: 20px;">Aún no tienes misiones registradas.</h2>
+            <a th:href="@{/}" class="btn-checkout" style="display: inline-block; width: auto; padding: 10px 30px;">Explorar Catálogo</a>
+        </div>
+
+        <!-- Tabla de pedidos oscurecida -->
+        <div th:unless="${listaPedidos.isEmpty()}" class="orders-container">
+            <table class="dark-table">
+                <thead>
+                    <tr>
+                        <th>Número de Pedido</th>
+                        <th>Fecha de Compra</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pedido : ${listaPedidos}">
+                        <td style="font-weight: bold; color: #f8fafc;" th:text="${pedido.numPedido}">PA-12345</td>
+                        
+                        <td style="color: #94a3b8;" th:text="${#temporals.format(pedido.fechaCompra, 'dd/MM/yyyy HH:mm')}">12/05/2026</td>
+                        
+                        <td>
+                            <!-- Etiqueta de estado con colores -->
+                            <span class="badge-status" th:text="${pedido.estadoEnvio}">PROCESANDO</span>
+                        </td>
+                        
+                        <td class="price-blue" style="font-size: 1.1rem; font-weight: bold;" th:text="'$' + ${pedido.total}">$5,299.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Botón de regreso -->
+            <div style="margin-top: 30px;">
+                <a th:href="@{/}" class="btn-outline" style="display: inline-block; width: auto; padding: 10px 30px;">← Volver a la Tienda</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

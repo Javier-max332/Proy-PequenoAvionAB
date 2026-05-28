@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <!-- Título fijo de la pestaña del navegador -->
+        <title>Factura - Pequeño Avión</title>
+        <!-- Ícono (favicon) de la pestaña del navegador -->
+        <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+        <style>
+            /* =================================================================
+               ESTILOS DE LA FACTURA: Look limpio tipo documento profesional
+               ================================================================= */
+
+            /* Estilo base de la página (fondo gris claro para resaltar el papel blanco) */
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f3f4f6;
+                color: #111827;
+                margin: 0;
+                padding: 40px;
+            }
+
+            /* Contenedor principal que simula una hoja de papel */
+            .factura-container {
+                max-width: 800px;
+                margin: 0 auto;
+                background: white;
+                padding: 40px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra estilo papel */
+                border-radius: 8px;
+                border-top: 8px solid #3b82f6;          /* Franja azul superior */
+            }
+
+            /* ---------- ENCABEZADO DE LA FACTURA ---------- */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 2px solid #e5e7eb;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }
+            .header h1 {
+                margin: 0;
+                color: #3b82f6;
+                font-size: 28px;
+            }
+            /* Datos del folio, pedido y fecha (alineados a la derecha) */
+            .header-info p {
+                margin: 2px 0;
+                font-size: 14px;
+                color: #6b7280;
+                text-align: right;
+            }
+
+            /* ---------- CUADRÍCULA DE DATOS (CLIENTE Y ENVÍO) ---------- */
+            .datos-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 2 columnas iguales */
+                gap: 30px;
+                margin-bottom: 30px;
+            }
+            /* Cada caja gris dentro de la cuadrícula */
+            .box {
+                background: #f9fafb;
+                padding: 20px;
+                border-radius: 6px;
+                border: 1px solid #e5e7eb;
+            }
+            .box h3 {
+                margin-top: 0;
+                font-size: 14px;
+                color: #9ca3af;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .box p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+
+            /* ---------- TABLA DE PRODUCTOS COMPRADOS ---------- */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 30px;
+            }
+            /* Encabezados de la tabla en azul */
+            th {
+                background: #3b82f6;
+                color: white;
+                padding: 12px;
+                text-align: left;
+                font-size: 14px;
+            }
+            /* Celdas con línea divisoria inferior */
+            td {
+                padding: 12px;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 14px;
+            }
+
+            /* ---------- TOTAL Y BOTÓN DE REGRESO ---------- */
+            .total-box {
+                text-align: right;
+                font-size: 20px;
+                font-weight: bold;
+                color: #111827;
+            }
+            .btn-volver {
+                display: inline-block;
+                margin-top: 30px;
+                background: #374151;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+            }
+
+            /* =================================================================
+               MAGIA PARA IMPRIMIR (@media print):
+               Si el usuario presiona Ctrl+P, oculta el botón de regreso y
+               quita sombras/márgenes para ahorrar tinta y verse profesional.
+               ================================================================= */
+            @media print {
+                body {
+                    background: white;  /* Quita el fondo gris */
+                    padding: 0;
+                }
+                .factura-container {
+                    box-shadow: none;   /* Quita la sombra */
+                    border: none;
+                }
+                .btn-volver {
+                    display: none;      /* Oculta el botón al imprimir */
+                }
+            }
+        </style>
+        <!-- /head: fin de la cabecera y estilos -->
+    </head>
+
+    <body>
+
+        <!-- ====================================================================
+             VISTA: factura.html
+             Plantilla lista para ser impresa o guardada como PDF por el cliente.
+             Recibe del controlador: factura, pedido, pago, direccion, listaProductos
+             ==================================================================== -->
+
+        <!-- Contenedor principal que simula una hoja de papel -->
+        <div class="factura-container">
+
+            <!-- ============== 1. ENCABEZADO ==============
+                 Datos fiscales de la tienda + folios identificadores -->
+            <div class="header">
+                <!-- Izquierda: Nombre y giro de la empresa -->
+                <div>
+                    <h1>Pequeño Avión S.A. de C.V.</h1>
+                    <p style="color: #6b7280; margin-top: 5px; font-size: 14px;">Venta de Componentes de Computadora</p>
+                </div>
+                <!-- Derecha: Folio de factura, referencia del pedido y fecha -->
+                <div class="header-info">
+                    <p><strong>FACTURA FOLIO:</strong> <span th:text="${factura.id}"></span></p>
+                    <p><strong>PEDIDO REF:</strong> <span th:text="${pedido.numPedido}"></span></p>
+                    <!-- #temporals.format: utilidad de Thymeleaf que formatea fechas/horas legibles -->
+                    <p><strong>FECHA EMISIÓN:</strong> <span th:text="${#temporals.format(factura.fechaEmision, 'dd/MM/yyyy HH:mm')}"></span></p>
+                </div>
+                <!-- /header -->
+            </div>
+
+            <!-- ============== 2. DATOS DEL CLIENTE Y ENVÍO ============== -->
+            <div class="datos-grid">
+
+                <!-- Caja izquierda: Datos fiscales (a quién se le factura) -->
+                <div class="box">
+                    <h3>Datos de Facturación</h3>
+                    <p><strong>Cliente:</strong> <span th:text="${factura.razonSocial}"></span></p>
+                    <p><strong>RFC:</strong> <span th:text="${factura.rfc}"></span></p>
+                    <p><strong>Método de Pago:</strong> <span th:text="${pago.metodoPago}"></span></p>
+                </div>
+
+                <!-- Caja derecha: Datos logísticos (a dónde llegó el paquete) -->
+                <div class="box">
+                    <h3>Dirección de Envío</h3>
+                    <p><span th:text="${direccion.calle + ' #' + direccion.numExterior}"></span></p>
+                    <p><span th:text="${direccion.municipio + ', ' + direccion.estado}"></span></p>
+                    <p><strong>C.P.:</strong> <span th:text="${direccion.codigoPostal}"></span> - <span th:text="${direccion.pais}"></span></p>
+                </div>
+
+                <!-- /datos-grid -->
+            </div>
+
+            <!-- ============== 3. TABLA DE COMPONENTES COMPRADOS ============== -->
+            <table>
+                <!-- Encabezados de columnas -->
+                <thead>
+                    <tr>
+                        <th>CANT</th>
+                        <th>DESCRIPCIÓN DEL COMPONENTE</th>
+                        <th>PRECIO UNIT.</th>
+                        <th>IMPORTE</th>
+                    </tr>
+                </thead>
+
+                <!-- Cuerpo: se llena dinámicamente con los productos del pedido -->
+                <tbody>
+                    <!-- BUCLE th:each: imprime un renglón por cada producto en "listaProductos" -->
+                    <tr th:each="item : ${listaProductos}">
+                        <td th:text="${item.cantidad}"></td>
+                        <td th:text="${item.nombre}"></td>
+                        <!-- #numbers.formatDecimal: formatea con coma de miles y 2 decimales -->
+                        <td th:text="'$' + ${#numbers.formatDecimal(item.precio, 1, 'COMMA', 2, 'POINT')}"></td>
+                        <td th:text="'$' + ${#numbers.formatDecimal(item.importe, 1, 'COMMA', 2, 'POINT')}"></td>
+                    </tr>
+                </tbody>
+                <!-- /table -->
+            </table>
+
+            <!-- ============== 4. TOTAL FINAL ============== -->
+            <div class="total-box">
+                Total Facturado: 
+                <span th:text="'$' + ${#numbers.formatDecimal(pedido.total, 1, 'COMMA', 2, 'POINT')}"></span> MXN
+            </div>
+
+            <!-- Botón de regreso (se OCULTA automáticamente al imprimir gracias a @media print) -->
+            <a th:href="@{/mis-pedidos}" class="btn-volver">⬅ Volver a Mis Pedidos</a>
+
+            <!-- /factura-container: fin de la hoja de factura -->
+        </div>
+
+        <!-- /body: fin del cuerpo de la página -->
+    </body>
+    <!-- /html: fin del documento -->
+</html>

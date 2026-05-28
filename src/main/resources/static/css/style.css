@@ -1,0 +1,509 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 may 2026, 9:48:16 p.m.
+    Author     : Javier
+*/
+
+/* style.css */
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+.header {
+    text-align: center;
+    padding: 40px 0;
+    border-bottom: 2px solid #38bdf8;
+    margin-bottom: 40px;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #38bdf8;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+.price {
+    color: #38bdf8;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.sku {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+.badge {
+    background: #0369a1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+}
+
+/* Las imágenes que agregamos hace un momento */
+.image-container {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #0f172a;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* style.css actualizado */
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    /* Quita la apariencia por defecto en algunos navegadores */
+    appearance: none;
+}
+
+/* Añadimos una flecha personalizada para el select */
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+    padding-right: 2.5rem;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    background-color: #1e293b;
+}
+
+/* Estilo para las opciones dentro del select */
+option {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+}
+
+.btn-delete {
+    display: block;
+    text-align: center;
+    background-color: #ef4444; /* Rojo alerta */
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c; /* Rojo más oscuro al pasar el mouse */
+}
+
+.btn-edit {
+    display: block;
+    text-align: center;
+    background-color: #f59e0b; /* Naranja/Amarillo */
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    flex: 1; /* Para que ambos botones midan lo mismo */
+}
+
+.btn-edit:hover {
+    background-color: #d97706;
+}
+
+.btn-delete {
+    flex: 1; /* Añade esto a tu clase btn-delete que ya tenías */
+}
+
+.btn-comprar {
+    width: 100%;
+    padding: 10px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.cart-icon-wrapper {
+    position: absolute;
+    top: 25px;
+    right: 75px; /* Antes era 25px, lo movemos para hacer espacio */
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.cart-icon-wrapper:hover {
+    transform: scale(1.1);
+}
+.cart-icon-wrapper:hover svg {
+    color: #38bdf8 !important; /* Brilla en azul al pasar el mouse */
+}
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: #ef4444; /* Rojo notificación */
+    color: white;
+    border-radius: 50%;
+    padding: 2px 7px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.user-icon-wrapper {
+    position: absolute;
+    top: 25px;
+    right: 25px; 
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.user-icon-wrapper:hover {
+    transform: scale(1.1);
+}
+.user-icon-wrapper:hover svg {
+    color: #38bdf8 !important; /* Brilla en azul al pasar el mouse */
+}
+
+/* --- ESTILOS ESPECÍFICOS DEL CARRITO (Clon Diseño) --- */
+body {
+    background-color: #0b0f19; /* Fondo muy oscuro de la imagen */
+    color: #f8fafc;
+    font-family: sans-serif;
+}
+
+.cart-wrapper {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.cart-header-title {
+    margin-bottom: 30px;
+}
+.cart-header-title .subtitle {
+    color: #3b82f6;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.cart-header-title h1 {
+    font-size: 2.2rem;
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+.cart-grid {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Columna Izquierda */
+.cart-items-column {
+    flex: 2;
+}
+
+.cart-item-card {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #1e293b;
+    border-top: 1px solid #1e293b; /* Para que coincida con la imagen */
+    margin-bottom: -1px; /* Evita bordes dobles */
+}
+
+.item-img-container {
+    width: 140px;
+    height: 140px;
+    background: #1e293b;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.item-img-container img {
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.item-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+.price-blue {
+    color: #3b82f6;
+    font-size: 0.95rem;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+.qty-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    background: transparent;
+}
+.btn-qty {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-qty:hover {
+    color: white;
+}
+.qty-number {
+    font-size: 0.95rem;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+}
+.btn-trash {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+.btn-trash:hover svg {
+    stroke: #dc2626;
+}
+
+.item-total-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.empty-cart-action {
+    margin-top: 20px;
+}
+.link-red {
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
+.link-red:hover {
+    color: #dc2626;
+}
+
+/* Columna Derecha (Resumen) */
+.cart-summary-column {
+    flex: 1;
+}
+.summary-box {
+    background-color: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 25px;
+}
+.summary-box h2 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+}
+.text-green {
+    color: #10b981;
+}
+
+.summary-divider {
+    border: none;
+    border-top: 1px solid #1e293b;
+    margin: 20px 0;
+}
+.subtotal-row {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.btn-checkout {
+    display: block;
+    width: 100%;
+    background-color: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+.btn-checkout:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-outline {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+.btn-outline:hover {
+    background-color: #1e293b;
+}
+
+/* --- ESTILOS PARA LA TABLA DE MIS PEDIDOS --- */
+.orders-container {
+    background-color: #111827; /* Fondo de la caja igual al resumen del carrito */
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.dark-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.dark-table th {
+    padding: 15px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #1e293b;
+}
+
+.dark-table td {
+    padding: 20px 15px;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* El último renglón no necesita borde abajo */
+.dark-table tr:last-child td {
+    border-bottom: none; 
+}
+
+/* Etiqueta de estado del envío */
+.badge-status {
+    background-color: #064e3b; /* Fondo verde muy oscuro */
+    color: #34d399;            /* Texto verde brillante */
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid #047857;
+}
+
+/* Barra de navegación */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 50px;
+                background-color: #0b0f19;
+                border-bottom: 1px solid #1f2937;
+            }
+            .nav-brand {
+                font-size: 18px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: white;
+                text-decoration: none;
+            }
+            .nav-center a {
+                color: #9ca3af;
+                text-decoration: none;
+                margin: 0 20px;
+                font-size: 14px;
+                transition: color 0.3s;
+            }
+            .nav-center a:hover {
+                color: white;
+            }
+

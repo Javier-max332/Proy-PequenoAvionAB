@@ -1,0 +1,255 @@
+Aquí tienes tu código documentado con comentarios cortos pero detallados, incluyendo los comentarios de cierre:
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <!-- Título fijo de la pestaña del navegador -->
+        <title>Registro de Componente - Pequeño Avión</title>
+        <!-- Ícono (favicon) de la pestaña -->
+        <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+
+        <!-- Hoja de estilos global del proyecto (universal) -->
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+
+        <!-- Estilos específicos del formulario (adaptados al tema oscuro) -->
+        <style>
+            /* =================================================================
+               CONTENEDOR PRINCIPAL: "Card" oscura centrada
+               ================================================================= */
+            .form-container {
+                max-width: 800px;
+                margin: 40px auto;
+                padding: 25px 30px;
+                background-color: #1e293b;   /* Mismo fondo que el resto de las cards del sitio */
+                border: 1px solid #334155;   /* Borde sutil */
+                border-radius: 12px;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); /* Sombra elevada */
+            }
+
+            /* Título del formulario con línea inferior */
+            .form-container h2 {
+                margin-top: 0;
+                color: #f8fafc;
+                font-size: 22px;
+                border-bottom: 2px solid #334155;
+                padding-bottom: 12px;
+                margin-bottom: 25px;
+            }
+
+            /* =================================================================
+               LAYOUT EN 2 COLUMNAS para los campos del formulario
+               ================================================================= */
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px 20px; /* 15px vertical, 20px horizontal */
+            }
+
+            /* Cada grupo label + input apilado verticalmente */
+            .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Etiquetas en gris azulado (legibles sin saturar el ojo) */
+            .form-group label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #94a3b8;
+                margin-bottom: 4px;
+            }
+
+            /* Sobrescribe el style.css universal para tener inputs MÁS COMPACTOS aquí */
+            .form-container input,
+            .form-container select,
+            .form-container textarea {
+                padding: 8px 12px !important; /* Más cortos que el padding 12x15 global */
+                font-size: 0.95rem;
+                margin-top: 0;
+            }
+
+            /* Helper para que un campo ocupe las 2 columnas completas */
+            .full-width {
+                grid-column: 1 / -1;
+                margin-top: 10px;
+            }
+
+            /* =================================================================
+               BOTONES DE ACCIÓN (Cancelar / Guardar)
+               ================================================================= */
+            .form-actions {
+                display: flex;
+                justify-content: flex-end; /* Alineados a la derecha */
+                gap: 15px;
+                margin-top: 25px;
+                padding-top: 20px;
+                border-top: 1px solid #334155;
+            }
+
+            /* Botón CANCELAR: transparente, se vuelve rojo al pasar el mouse */
+            .btn-cancel {
+                padding: 9px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #cbd5e1;
+                background-color: transparent;
+                border: 1px solid #334155;
+                border-radius: 6px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            .btn-cancel:hover {
+                background-color: #ef4444; /* Rojo de advertencia (mismo del .btn-delete) */
+                color: white;
+                border-color: #ef4444;
+            }
+
+            /* Botón GUARDAR: azul brillante con efecto "elevación" al pasar el mouse */
+            .btn-save-dark {
+                padding: 9px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #0f172a;             /* Letra oscura para contraste */
+                background-color: #38bdf8;  /* Azul de acento principal */
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);
+            }
+            .btn-save-dark:hover {
+                background-color: #0284c7;       /* Azul más intenso */
+                color: white;
+                transform: translateY(-2px);     /* Pequeño "saltito" visual */
+                box-shadow: 0 6px 15px rgba(56, 189, 248, 0.4);
+            }
+        </style>
+        <!-- /head: fin de la cabecera y estilos -->
+    </head>
+
+    <body>
+
+        <!-- ====================================================================
+             VISTA: formProducto.html
+             Formulario administrativo para registrar o editar un componente.
+             Recibe del controlador:
+               - producto         (objeto a llenar/editar, vinculado vía th:object)
+               - listaCategorias  (para el <select> de categorías)
+               - listaProveedores (para el <select> de proveedores)
+             ==================================================================== -->
+
+        <!-- Card oscura que contiene todo el formulario -->
+        <div class="form-container">
+            <h2>📦 Registro de Componente</h2>
+
+            <!-- Formulario vinculado al objeto "producto" (th:object) 
+                 Envía los datos vía POST a /productos/guardar -->
+            <form th:action="@{/productos/guardar}" th:object="${producto}" method="POST">
+
+                <!-- Campo oculto para guardar el ID (sirve al editar productos existentes) -->
+                <input type="hidden" th:field="*{id}" />
+
+                <!-- ============== CUADRÍCULA DE CAMPOS (2 columnas) ============== -->
+                <div class="form-grid">
+
+                    <!-- SKU: código único del componente (obligatorio) -->
+                    <div class="form-group">
+                        <label>SKU (Código Único):</label>
+                        <input type="text" th:field="*{sku}" required />
+                    </div>
+
+                    <!-- Marca del fabricante (opcional) -->
+                    <div class="form-group">
+                        <label>Marca:</label>
+                        <input type="text" th:field="*{marca}" />
+                    </div>
+
+                    <!-- Nombre comercial del producto (obligatorio) -->
+                    <div class="form-group">
+                        <label>Nombre del Producto:</label>
+                        <input type="text" th:field="*{nombre}" required />
+                    </div>
+
+                    <!-- Modelo específico (opcional) -->
+                    <div class="form-group">
+                        <label>Modelo:</label>
+                        <input type="text" th:field="*{modelo}" />
+                    </div>
+
+                    <!-- Costo de compra (lo que pagas al proveedor) -->
+                    <div class="form-group">
+                        <label>Costo de Adquisición:</label>
+                        <input type="number" step="0.01" th:field="*{costoAdquisicion}" />
+                    </div>
+
+                    <!-- Precio de venta al cliente (obligatorio) -->
+                    <div class="form-group">
+                        <label>Precio de Venta Base:</label>
+                        <input type="number" step="0.01" th:field="*{precio}" required />
+                    </div>
+
+                    <!-- Cantidad disponible en almacén -->
+                    <div class="form-group">
+                        <label>Unidades en Stock:</label>
+                        <input type="number" th:field="*{stock}" />
+                    </div>
+
+                    <!-- URL de la imagen del producto (opcional) -->
+                    <div class="form-group">
+                        <label>URL de la Imagen:</label>
+                        <input type="text" th:field="*{imagenUrl}" />
+                    </div>
+
+                    <!-- Selector de CATEGORÍA: se llena dinámicamente con listaCategorias -->
+                    <div class="form-group">
+                        <label>Categoría:</label>
+                        <select th:field="*{categoriaId}" required>
+                            <option value="">-- Selecciona Categoría --</option>
+                            <!-- BUCLE: genera un <option> por cada categoría disponible -->
+                            <option th:each="cat : ${listaCategorias}" 
+                                    th:value="${cat.id}" 
+                                    th:text="${cat.nombre}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Selector de PROVEEDOR: se llena dinámicamente con listaProveedores -->
+                    <div class="form-group">
+                        <label>Proveedor:</label>
+                        <select th:field="*{proveedorId}" required>
+                            <option value="">-- Selecciona Proveedor --</option>
+                            <!-- BUCLE: genera un <option> por cada proveedor disponible -->
+                            <option th:each="prov : ${listaProveedores}" 
+                                    th:value="${prov.id}" 
+                                    th:text="${prov.nombreEmpresa}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- /form-grid: fin de la cuadrícula de 2 columnas -->
+                </div>
+
+                <!-- Campo de DESCRIPCIÓN: ocupa el ancho completo (debajo de la cuadrícula) -->
+                <div class="form-group full-width">
+                    <label>Descripción del Componente:</label>
+                    <textarea th:field="*{descripcion}" rows="3"></textarea>
+                </div>
+
+                <!-- ============== BOTONES DE ACCIÓN ============== -->
+                <div class="form-actions">
+                    <!-- Cancelar: regresa al catálogo sin guardar -->
+                    <a th:href="@{/catalogo}" class="btn-cancel">Cancelar</a>
+                    <!-- Guardar: envía el formulario al endpoint /productos/guardar -->
+                    <button type="submit" class="btn-save-dark">Guardar Componente</button>
+                </div>
+
+                <!-- /form: fin del formulario de producto -->
+            </form>
+            <!-- /form-container: fin de la card del formulario -->
+        </div>
+
+        <!-- /body: fin del cuerpo de la página -->
+    </body>
+    <!-- /html: fin del documento -->
+</html>
